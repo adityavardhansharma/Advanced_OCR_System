@@ -1,0 +1,6 @@
+Flask
+Pillow
+pytesseract
+pymongo
+python-dotenv
+supabase

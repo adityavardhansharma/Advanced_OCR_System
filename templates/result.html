@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OCR Output – Lab Report OCR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="result-header">
+      <h1>OCR Output</h1>
+      <p>Your lab report data is organized below.</p>
+    </header>
+    <main>
+      <div class="output-wrapper">
+        <div class="output-card patient-card">
+          <h2>Patient Details</h2>
+          <div class="patient-grid">
+            <div class="grid-item">
+              <span class="label">Name</span>
+              <span class="value">{{ parsed_data.get("name", "Not found") }}</span>
+            </div>
+            <div class="grid-item">
+              <span class="label">Registration No</span>
+              <span class="value">{{ parsed_data.get("registration_no", "Not found") }}</span>
+            </div>
+            <div class="grid-item">
+              <span class="label">Age</span>
+              <span class="value">{{ parsed_data.get("age", "Not found") }}</span>
+            </div>
+            <div class="grid-item">
+              <span class="label">Sex</span>
+              <span class="value">{{ parsed_data.get("sex", "Not found") }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="output-card test-card">
+          <h2>Test Results</h2>
+          {% if parsed_data.get("tests") %}
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Test</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for test, value in parsed_data.get("tests").items() %}
+              <tr>
+                <td>{{ test }}</td>
+                <td>{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <p class="no-results">No test results found.</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="action-container">
+        <button class="action-button" onclick="location.href='{{ url_for('index') }}'">
+          Upload Another Test
+        </button>
+      </div>
+    </main>
+  </body>
+</html>
