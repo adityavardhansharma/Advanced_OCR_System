@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}My Profile - Lab Report OCR{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+  <div class="profile-header">
+    <h2>Personal Information</h2>
+    <div class="profile-details">
+      <div class="profile-item">
+        <span class="label">Registration ID</span>
+        <span class="value">{{ user.registration_id }}</span>
+      </div>
+      <div class="profile-item">
+        <span class="label">Name</span>
+        <span class="value">{{ user.name }}</span>
+      </div>
+      <div class="profile-item">
+        <span class="label">Email</span>
+        <span class="value">{{ user.email }}</span>
+      </div>
+      <div class="profile-item">
+        <span class="label">Age</span>
+        <span class="value">{{ user.age }}</span>
+      </div>
+      <div class="profile-item">
+        <span class="label">Gender</span>
+        <span class="value">{{ user.gender }}</span>
+      </div>
+      <div class="profile-item">
+        <span class="label">Mobile</span>
+        <span class="value">{{ user.mobile }}</span>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <a href="{{ url_for('image_upload') }}" class="profile-btn primary-btn">Upload Lab Report</a>
+      <a href="{{ url_for('voice_upload') }}" class="profile-btn secondary-btn">Record Voice Result</a>
+    </div>
+  </div>
+
+  <div class="test-results-section">
+    <h2>My Test Results</h2>
+    {% if test_results %}
+    <div class="test-results-list">
+      {% for result in test_results %}
+      <div class="test-result-card">
+        <div class="test-result-header">
+          <span class="test-result-date">{{ result.timestamp.strftime('%d %b %Y, %H:%M') }}</span>
+          <span class="test-result-type {% if result.source == 'voice' %}voice{% endif %}">
+            {% if result.source == 'voice' %}Voice{% else %}Image{% endif %}
+          </span>
+        </div>
+        <div class="test-result-items">
+          {% for test, value in result.test_data.items() %}
+          <div class="test-item">
+            <span class="test-name">{{ test }}</span>
+            <span class="test-value">{{ value }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="test-results-empty">
+      <p>You don't have any test results yet. Upload a lab report or record voice results to get started.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

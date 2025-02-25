@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}OCR Results - Lab Report OCR{% endblock %}
+{% block title %}Voice Results - Lab Report OCR{% endblock %}
 
 {% block content %}
 <div class="output-wrapper container">
   <div class="output-card test-card">
-    <h2>OCR Test Results</h2>
-    {% if test_results %}
+    <h2>Voice Test Results</h2>
+    {% if tests %}
     <table class="results-table">
       <thead>
         <tr>
@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for test, value in test_results.items() %}
+        {% for test, value in tests.items() %}
         <tr>
           <td>{{ test }}</td>
           <td>{{ value }}</td>
@@ -23,12 +23,12 @@
       </tbody>
     </table>
     {% else %}
-    <p class="no-results">No test results were found.</p>
+    <p class="no-results">No test results found. Please record your test results again.</p>
     {% endif %}
   </div>
   <div class="action-container">
-    <button class="action-button" onclick="location.href='{{ url_for('image_upload') }}'">
-      Upload Another Image
+    <button class="action-button" onclick="location.href='{{ url_for('voice_upload') }}'">
+      Record Another Test
     </button>
     <button class="secondary-button" onclick="location.href='{{ url_for('profile') }}'">
       Go to Profile

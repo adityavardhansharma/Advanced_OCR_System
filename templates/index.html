@@ -1,61 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Lab Report OCR – Upload</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="header-content">
-        <h1>Lab Report OCR</h1>
-        <p>Easily extract data from your lab reports instantly.</p>
+{% extends "base.html" %}
+{% block title %}Home - Lab Report OCR{% endblock %}
+
+{% block content %}
+<!-- Header section with hero text -->
+<header class="header-section">
+  <div class="container">
+    <h1>Welcome to Lab Report OCR</h1>
+    <p>Easily extract test results from your lab reports in seconds.</p>
+    {% if not current_user %}
+    <a href="{{ url_for('signup') }}" class="btn primary-btn">Get Started</a>
+    {% endif %}
+  </div>
+</header>
+
+<!-- Main content: For logged in users, a mode selection; for guests, an introduction -->
+<main class="main-content container">
+  {% if current_user %}
+  <section class="mode-selection">
+    <h2>Choose a Processing Method</h2>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="location.href='{{ url_for('image_upload') }}'">
+        <div class="mode-icon">
+          <!-- SVG icon for image upload -->
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M16 16H7a4 4 0 0 1 0-8 5 5 0 0 1 9.9-1A4 4 0 0 1 16 16z"
+            ></path>
+            <polyline points="12 12 12 21"></polyline>
+          </svg>
+        </div>
+        <h3>Process with Image</h3>
+        <p>Upload a lab report image to extract test results.</p>
       </div>
-    </header>
-    <main>
-      <section class="upload-section">
-        <div class="upload-container">
-          <form id="uploadForm" action="{{ url_for('index') }}" method="post" enctype="multipart/form-data">
-            <div class="drop-area" id="dropArea">
-              <div class="upload-icon">
-                <svg class="upload-svg" viewBox="0 0 24 24" fill="none" stroke="#0070f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 16H7a4 4 0 0 1 0-8 5 5 0 0 1 9.9-1A4 4 0 0 1 16 16z"></path>
-                  <polyline points="12 12 12 21"></polyline>
-                </svg>
-              </div>
-              <h2>Drag &amp; Drop or Click to Upload</h2>
-              <p id="fileName">No file selected</p>
-            </div>
-            <!-- Hidden file input -->
-            <input type="file" name="image" id="fileInp" accept="image/*">
-            <button type="submit" class="upload-button">Process Image</button>
-          </form>
+      <div class="mode-card" onclick="location.href='{{ url_for('voice_upload') }}'">
+        <div class="mode-icon">
+          <!-- SVG icon for voice input -->
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+            ></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
         </div>
-      </section>
-
-      <section class="how-it-works-section">
-        <h2>How It Works</h2>
-        <div class="timeline-inline">
-          <div class="timeline-step">
-            <span class="step-number">1</span>
-            <span class="step-label">Upload Image</span>
-          </div>
-          <span class="timeline-arrow">&#8594;</span>
-          <div class="timeline-step">
-            <span class="step-number">2</span>
-            <span class="step-label">Extract Data</span>
-          </div>
-          <span class="timeline-arrow">&#8594;</span>
-          <div class="timeline-step">
-            <span class="step-number">3</span>
-            <span class="step-label">View Output</span>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Reference external JavaScript file -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  </body>
-</html>
+        <h3>Process with Voice</h3>
+        <p>Speak your test results for quick analysis.</p>
+      </div>
+    </div>
+  </section>
+  {% else %}
+  <section class="intro-section">
+    <h2>Welcome!</h2>
+    <p>Please login or sign up to start processing your lab reports.</p>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

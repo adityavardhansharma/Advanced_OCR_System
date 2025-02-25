@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Upload Image - Lab Report OCR{% endblock %}
+
+{% block content %}
+<div class="upload-container container">
+  <h2>Upload Image</h2>
+  <form id="uploadForm" action="{{ url_for('image_upload') }}" method="post"
+    enctype="multipart/form-data">
+    <div class="drop-area" id="dropArea">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M16 16H7a4 4 0 0 1 0-8 5 5 0 0 1 9.9-1A4 4 0 0 1 16 16z"
+          ></path>
+          <polyline points="12 12 12 21"></polyline>
+        </svg>
+      </div>
+      <h2>Drag &amp; Drop or Click to Upload</h2>
+      <p id="fileName">No file selected</p>
+    </div>
+    <input type="file" name="image" id="fileInp" accept="image/*" hidden>
+    <button type="submit" class="upload-button">Process Image</button>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Voice Input - Lab Report OCR{% endblock %}
+
+{% block content %}
+<div class="voice-container container">
+  <h2>Voice Input</h2>
+  <div class="voice-status-container">
+    <div id="recordingIndicator" class="recording-indicator"></div>
+    <div id="statusMessage" class="status-message">Ready to record</div>
+    <div id="timer" class="timer">00:00</div>
+  </div>
+  <div class="recording-controls">
+    <button id="startRecording" class="voice-button primary-btn">Start Recording</button>
+    <button id="stopRecording" class="voice-button secondary-btn" disabled>
+      Stop Recording
+    </button>
+  </div>
+
+  <form id="audioForm" action="{{ url_for('process_voice') }}" method="post" enctype="multipart/form-data">
+    <!-- Hidden audio blob will be added here -->
+  </form>
+
+  <section class="voice-tips-section">
+    <h2>Tips for Best Results</h2>
+    <div class="tips-container">
+      <div class="tip-item">
+        <div class="tip-icon">📢</div>
+        <div class="tip-text">Speak clearly at a normal pace</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">🔢</div>
+        <div class="tip-text">State both the test name and its value</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">🧪</div>
+        <div class="tip-text">Examples: "Hemoglobin is 14.5" or "Blood glucose is 95"</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">🎯</div>
+        <div class="tip-text">Be precise with numerical values</div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include your voice processing JS file -->
+<script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+{% endblock %}
