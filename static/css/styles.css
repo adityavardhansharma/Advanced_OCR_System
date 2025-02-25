@@ -42,10 +42,119 @@ a {
   font-size: 1.1rem;
 }
 
+/* Mode Selection Section */
+.mode-selection {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.mode-selection h2 {
+  font-size: 2.2rem;
+  color: #0070f3;
+  margin-bottom: 30px;
+}
+
+.mode-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.mode-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  padding: 30px;
+  width: 320px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.mode-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.mode-icon {
+  margin-bottom: 20px;
+}
+
+.mode-icon svg {
+  width: 80px;
+  height: 80px;
+}
+
+.mode-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #0070f3;
+}
+
+.mode-card p {
+  margin-bottom: 25px;
+  color: #666;
+}
+
+.mode-button {
+  display: inline-block;
+  background: #0070f3;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+}
+
+/* Info Section */
+.info-section {
+  padding: 50px 20px;
+  background: #eef5ff;
+  text-align: center;
+}
+
+.info-section h2 {
+  font-size: 2.2rem;
+  color: #0070f3;
+  margin-bottom: 30px;
+}
+
+.info-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.info-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+  padding: 25px;
+  width: 400px;
+  text-align: left;
+}
+
+.info-card h3 {
+  color: #0070f3;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.info-card p {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* Upload section (original from before) */
 .upload-section {
   padding: 30px 20px;
   background: #fff;
-  min-height: calc(100vh - 160px);
+  min-height: calc(100vh - 200px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -117,6 +226,234 @@ a {
   background-color: #005bb5;
 }
 
+/* Voice recording section */
+.voice-section {
+  padding: 30px 20px;
+  background: #fff;
+  min-height: calc(100vh - 200px);
+}
+
+.voice-container {
+  max-width: 700px;
+  margin: 0 auto 30px auto;
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.voice-status-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.recording-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.recording-indicator.active {
+  background-color: #f03e3e;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(240, 62, 62, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(240, 62, 62, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(240, 62, 62, 0);
+  }
+}
+
+.status-message {
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.timer {
+  padding: 5px 15px;
+  background: #f4f4f4;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-family: monospace;
+  margin-left: 10px;
+}
+
+.voice-instructions {
+  margin: 20px auto;
+  max-width: 500px;
+  text-align: left;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.voice-instructions h2 {
+  color: #0070f3;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.voice-instructions ol {
+  padding-left: 20px;
+}
+
+.voice-instructions li {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.recording-controls {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.voice-button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.voice-button:hover {
+  transform: translateY(-2px);
+}
+
+.voice-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.start-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.start-button:hover:not(:disabled) {
+  background-color: #3d8b40;
+}
+
+.stop-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.stop-button:hover:not(:disabled) {
+  background-color: #d32f2f;
+}
+
+.processing-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 112, 243, 0.2);
+  border-radius: 50%;
+  border-top-color: #0070f3;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Voice tips section */
+.voice-tips-section {
+  padding: 40px 20px;
+  background: #eef5ff;
+}
+
+.voice-tips-section h2 {
+  color: #0070f3;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+}
+
+.tips-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.tip-item {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  width: calc(50% - 10px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.tip-icon {
+  font-size: 24px;
+  margin-right: 15px;
+}
+
+.tip-text {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Back button */
+.back-button-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 15px;
+  background: #f1f1f1;
+  border-radius: 20px;
+  color: #555;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.back-button:hover {
+  background: #e0e0e0;
+}
+
+/* Original styles from before (adjusted) */
 .how-it-works-section {
   padding: 20px;
   background: #fff;
@@ -259,10 +596,27 @@ a {
   font-size: 1.1rem;
   cursor: pointer;
   transition: background 0.3s ease;
+  margin: 0 10px;
 }
 
 .action-button:hover {
   background: #005bb5;
+}
+
+.secondary-button {
+  padding: 15px 35px;
+  background: #f1f1f1;
+  color: #333;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin: 0 10px;
+}
+
+.secondary-button:hover {
+  background: #e0e0e0;
 }
 
 @media (max-width: 768px) {
@@ -276,5 +630,20 @@ a {
   }
   .patient-grid {
     grid-template-columns: 1fr;
+  }
+  .mode-cards, .tips-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .mode-card {
+    width: 100%;
+    max-width: 320px;
+  }
+  .tip-item {
+    width: 100%;
+  }
+  .recording-controls {
+    flex-direction: column;
+    align-items: center;
   }
 }

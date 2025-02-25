@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lab Report OCR – Upload Image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-content">
+        <h1>Lab Report OCR</h1>
+        <p>Easily extract data from your lab reports instantly.</p>
+      </div>
+    </header>
+    <main>
+      <div class="back-button-container">
+        <a href="{{ url_for('landing') }}" class="back-button">
+          <span>⬅</span> Back to Home
+        </a>
+      </div>
+
+      <section class="upload-section">
+        <div class="upload-container">
+          <form id="uploadForm" action="{{ url_for('image_upload') }}" method="post" enctype="multipart/form-data">
+            <div class="drop-area" id="dropArea">
+              <div class="upload-icon">
+                <svg class="upload-svg" viewBox="0 0 24 24" fill="none" stroke="#0070f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 16H7a4 4 0 0 1 0-8 5 5 0 0 1 9.9-1A4 4 0 0 1 16 16z"></path>
+                  <polyline points="12 12 12 21"></polyline>
+                </svg>
+              </div>
+              <h2>Drag &amp; Drop or Click to Upload</h2>
+              <p id="fileName">No file selected</p>
+            </div>
+            <!-- Hidden file input -->
+            <input type="file" name="image" id="fileInp" accept="image/*">
+            <button type="submit" class="upload-button">Process Image</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="how-it-works-section">
+        <h2>How It Works</h2>
+        <div class="timeline-inline">
+          <div class="timeline-step">
+            <span class="step-number">1</span>
+            <span class="step-label">Upload Image</span>
+          </div>
+          <span class="timeline-arrow">&#8594;</span>
+          <div class="timeline-step">
+            <span class="step-number">2</span>
+            <span class="step-label">Extract Data</span>
+          </div>
+          <span class="timeline-arrow">&#8594;</span>
+          <div class="timeline-step">
+            <span class="step-number">3</span>
+            <span class="step-label">View Output</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Reference external JavaScript file -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
