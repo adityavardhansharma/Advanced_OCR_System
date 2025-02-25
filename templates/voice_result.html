@@ -1,50 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Voice Results – Lab Report Analysis</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <header class="result-header">
-      <h1>Voice Analysis Results</h1>
-      <p>Here are your test results extracted from voice input</p>
-    </header>
-    <main>
-      <div class="output-wrapper">
-        <div class="output-card test-card">
-          <h2>Test Results</h2>
-          {% if tests %}
-          <table class="results-table">
-            <thead>
-              <tr>
-                <th>Test</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for test, value in tests.items() %}
-              <tr>
-                <td>{{ test }}</td>
-                <td>{{ value }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-          {% else %}
-          <p class="no-results">No test results found. Please try again with clearer voice input.</p>
-          {% endif %}
-        </div>
-      </div>
-      <div class="action-container">
-        <button class="action-button" onclick="location.href='{{ url_for('voice_upload') }}'">
-          Record Another Test
-        </button>
-        <button class="secondary-button" onclick="location.href='{{ url_for('landing') }}'">
-          Back to Home
-        </button>
-      </div>
-    </main>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block title %}Voice Results - Lab Report OCR{% endblock %}
+
+{% block content %}
+<div class="output-wrapper container">
+  <div class="output-card test-card">
+    <h2>Voice Test Results</h2>
+    {% if tests %}
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for test, value in tests.items() %}
+        <tr>
+          <td>{{ test }}</td>
+          <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="no-results">No test results found. Please record your test results again.</p>
+    {% endif %}
+  </div>
+  <div class="action-container">
+    <button class="action-button" onclick="location.href='{{ url_for('voice_upload') }}'">
+      Record Another Test
+    </button>
+    <button class="secondary-button" onclick="location.href='{{ url_for('profile') }}'">
+      Go to Profile
+    </button>
+  </div>
+</div>
+{% endblock %}

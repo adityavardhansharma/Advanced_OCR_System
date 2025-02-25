@@ -1,11 +1,16 @@
 import re
 import json
+import logging
 import speech_recognition as sr
 import spacy
 from pathlib import Path
 import tempfile
 import subprocess
 import os
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
 class VoiceProcessor:
@@ -15,76 +20,90 @@ class VoiceProcessor:
 
     def load_model(self):
         if self.nlp is None:
-            print("Loading spaCy model...")
+            logger.info("Loading spaCy model...")
             try:
                 self.nlp = spacy.load("en_core_sci_sm")
+                logger.info("Loaded en_core_sci_sm model")
             except OSError:
                 # If model not installed, use a more common model
-                print("en_core_sci_sm not found, using en_core_web_sm")
+                logger.info("en_core_sci_sm not found, using en_core_web_sm")
                 try:
                     self.nlp = spacy.load("en_core_web_sm")
+                    logger.info("Loaded en_core_web_sm model")
                 except OSError:
                     # Fall back to a small English model that should be available
-                    print("en_core_web_sm not found, using en_core_web_md")
+                    logger.info("en_core_web_sm not found, using en_core_web_md")
                     self.nlp = spacy.load("en_core_web_md")
+                    logger.info("Loaded en_core_web_md model")
         return self.nlp
 
     def process_audio_file(self, audio_file_path, mime_type=None):
         """Process a saved audio file and extract medical measurements"""
-        # Convert audio to WAV format using FFmpeg if it's not already in a compatible format
-        if not audio_file_path.lower().endswith(('.wav', '.aiff', '.flac')):
-            try:
-                # Create temporary WAV file
-                wav_file = tempfile.NamedTemporaryFile(delete=False, suffix='.wav')
-                wav_file.close()
+        temp_files = []  # Track temporary files for cleanup
 
-                # Use FFmpeg to convert (if available)
-                try:
-                    print(f"Converting {audio_file_path} to WAV format at {wav_file.name}")
-                    subprocess.run(
-                        ['ffmpeg', '-i', audio_file_path, '-y', wav_file.name],
-                        check=True,
-                        capture_output=True
-                    )
-                    audio_file_path = wav_file.name
-                    print(f"Conversion successful")
-                except (subprocess.SubprocessError, FileNotFoundError) as e:
-                    print(f"FFmpeg conversion failed: {e}")
-                    # If conversion fails, try direct processing
-                    print("Trying direct processing...")
-            except Exception as e:
-                print(f"Error creating temporary file: {e}")
-                # Continue with original file
-
-        # Process the audio file
-        recognizer = sr.Recognizer()
         try:
-            print(f"Opening audio file: {audio_file_path}")
-            with sr.AudioFile(audio_file_path) as source:
-                audio_data = recognizer.record(source)
-
-            try:
-                print("Recognizing speech with Google...")
-                text = recognizer.recognize_google(audio_data, language="en-US")
-                print(f"Recognized text: {text}")
-                return self.extract_medical_measurements(text)
-            except sr.UnknownValueError:
-                print("Could not understand audio")
-                return {"error": "Could not understand the audio. Please speak clearly and try again."}
-            except sr.RequestError as e:
-                print(f"Could not request results from Google Speech Recognition service: {e}")
-                return {"error": f"Speech recognition service error: {str(e)}"}
-        except Exception as e:
-            print(f"Error processing audio file: {str(e)}")
-            return {"error": f"Error processing audio: {str(e)}"}
-        finally:
-            # Clean up temporary file
-            if 'wav_file' in locals() and os.path.exists(wav_file.name):
+            # Convert audio to WAV format using FFmpeg if it's not already in a compatible format
+            if not audio_file_path.lower().endswith(('.wav', '.aiff', '.flac')):
                 try:
-                    os.unlink(wav_file.name)
-                    print(f"Removed temporary file: {wav_file.name}")
+                    # Create temporary WAV file
+                    wav_file = tempfile.NamedTemporaryFile(delete=False, suffix='.wav')
+                    wav_file.close()
+                    temp_files.append(wav_file.name)
+
+                    # Use FFmpeg to convert (if available)
+                    try:
+                        logger.info(f"Converting {audio_file_path} to WAV format at {wav_file.name}")
+                        subprocess.run(
+                            ['ffmpeg', '-i', audio_file_path, '-y', wav_file.name],
+                            check=True,
+                            capture_output=True
+                        )
+                        audio_file_path = wav_file.name
+                        logger.info(f"Conversion successful")
+                    except (subprocess.SubprocessError, FileNotFoundError) as e:
+                        logger.error(f"FFmpeg conversion failed: {e}")
+                        # If conversion fails, try direct processing
+                        logger.info("Trying direct processing...")
                 except Exception as e:
-                    print(f"Error removing temporary file: {e}")
+                    logger.error(f"Error creating temporary file: {e}")
+                    # Continue with original file
+
+            # Process the audio file
+            recognizer = sr.Recognizer()
+            try:
+                logger.info(f"Opening audio file: {audio_file_path}")
+                with sr.AudioFile(audio_file_path) as source:
+                    audio_data = recognizer.record(source)
+
+                try:
+                    logger.info("Recognizing speech with Google...")
+                    text = recognizer.recognize_google(audio_data, language="en-US")
+                    logger.info(f"Recognized text: {text}")
+
+                    # Extract medical measurements and add source information
+                    measurements = self.extract_medical_measurements(text)
+                    return {
+                        "tests": measurements,
+                        "source": "voice"
+                    }
+                except sr.UnknownValueError:
+                    logger.error("Could not understand audio")
+                    return {"error": "Could not understand the audio. Please speak clearly and try again."}
+                except sr.RequestError as e:
+                    logger.error(f"Could not request results from Google Speech Recognition service: {e}")
+                    return {"error": f"Speech recognition service error: {str(e)}"}
+            except Exception as e:
+                logger.error(f"Error processing audio file: {str(e)}")
+                return {"error": f"Error processing audio: {str(e)}"}
+        finally:
+            # Clean up temporary files
+            for temp_file in temp_files:
+                if os.path.exists(temp_file):
+                    try:
+                        os.unlink(temp_file)
+                        logger.info(f"Removed temporary file: {temp_file}")
+                    except Exception as e:
+                        logger.error(f"Error removing temporary file: {e}")
 
     def extract_medical_measurements(self, text):
         """Extract test names and values from transcribed text"""

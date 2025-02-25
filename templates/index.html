@@ -1,65 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Lab Report Analysis - Choose Mode</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="header-content">
-        <h1>Lab Report Analyzer</h1>
-        <p>Extract and analyze medical test results with ease</p>
-      </div>
-    </header>
-    <main>
-      <section class="mode-selection">
-        <h2>Choose Your Processing Method</h2>
-        <div class="mode-cards">
-          <div class="mode-card" onclick="window.location.href='{{ url_for('image_upload') }}'">
-            <div class="mode-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#0070f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                <polyline points="21 15 16 10 5 21"></polyline>
-              </svg>
-            </div>
-            <h3>Process with Image</h3>
-            <p>Upload a lab report image to extract all data</p>
-            <span class="mode-button">Upload Image</span>
-          </div>
-          <div class="mode-card" onclick="window.location.href='{{ url_for('voice_upload') }}'">
-            <div class="mode-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#0070f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                <line x1="12" y1="19" x2="12" y2="23"></line>
-                <line x1="8" y1="23" x2="16" y2="23"></line>
-              </svg>
-            </div>
-            <h3>Process with Voice</h3>
-            <p>Speak your test results for quick analysis</p>
-            <span class="mode-button">Record Voice</span>
-          </div>
-        </div>
-      </section>
+{% extends "base.html" %}
+{% block title %}Home - Lab Report OCR{% endblock %}
 
-      <section class="info-section">
-        <h2>How It Works</h2>
-        <div class="info-cards">
-          <div class="info-card">
-            <h3>Image Processing</h3>
-            <p>Upload your lab report image and our OCR technology will extract all information including patient details and test results.</p>
-            <p>Your data will be stored securely for future reference.</p>
-          </div>
-          <div class="info-card">
-            <h3>Voice Processing</h3>
-            <p>Simply speak your test names and values, and our system will instantly analyze them.</p>
-            <p>Voice data is processed immediately and not stored in any database.</p>
-          </div>
+{% block content %}
+<!-- Header section with hero text -->
+<header class="header-section">
+  <div class="container">
+    <h1>Welcome to Lab Report OCR</h1>
+    <p>Easily extract test results from your lab reports in seconds.</p>
+    {% if not current_user %}
+    <a href="{{ url_for('signup') }}" class="btn primary-btn">Get Started</a>
+    {% endif %}
+  </div>
+</header>
+
+<!-- Main content: For logged in users, a mode selection; for guests, an introduction -->
+<main class="main-content container">
+  {% if current_user %}
+  <section class="mode-selection">
+    <h2>Choose a Processing Method</h2>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="location.href='{{ url_for('image_upload') }}'">
+        <div class="mode-icon">
+          <!-- SVG icon for image upload -->
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M16 16H7a4 4 0 0 1 0-8 5 5 0 0 1 9.9-1A4 4 0 0 1 16 16z"
+            ></path>
+            <polyline points="12 12 12 21"></polyline>
+          </svg>
         </div>
-      </section>
-    </main>
-  </body>
-</html>
+        <h3>Process with Image</h3>
+        <p>Upload a lab report image to extract test results.</p>
+      </div>
+      <div class="mode-card" onclick="location.href='{{ url_for('voice_upload') }}'">
+        <div class="mode-icon">
+          <!-- SVG icon for voice input -->
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+            ></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+        </div>
+        <h3>Process with Voice</h3>
+        <p>Speak your test results for quick analysis.</p>
+      </div>
+    </div>
+  </section>
+  {% else %}
+  <section class="intro-section">
+    <h2>Welcome!</h2>
+    <p>Please login or sign up to start processing your lab reports.</p>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,83 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Voice Input – Lab Report Analysis</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="header-content">
-        <h1>Voice Test Analysis</h1>
-        <p>Speak your test results for instant processing</p>
+{% extends "base.html" %}
+{% block title %}Voice Input - Lab Report OCR{% endblock %}
+
+{% block content %}
+<div class="voice-container container">
+  <h2>Voice Input</h2>
+  <div class="voice-status-container">
+    <div id="recordingIndicator" class="recording-indicator"></div>
+    <div id="statusMessage" class="status-message">Ready to record</div>
+    <div id="timer" class="timer">00:00</div>
+  </div>
+  <div class="recording-controls">
+    <button id="startRecording" class="voice-button primary-btn">Start Recording</button>
+    <button id="stopRecording" class="voice-button secondary-btn" disabled>
+      Stop Recording
+    </button>
+  </div>
+
+  <form id="audioForm" action="{{ url_for('process_voice') }}" method="post" enctype="multipart/form-data">
+    <!-- Hidden audio blob will be added here -->
+  </form>
+
+  <section class="voice-tips-section">
+    <h2>Tips for Best Results</h2>
+    <div class="tips-container">
+      <div class="tip-item">
+        <div class="tip-icon">📢</div>
+        <div class="tip-text">Speak clearly at a normal pace</div>
       </div>
-    </header>
-    <main>
-      <div class="back-button-container">
-        <a href="{{ url_for('landing') }}" class="back-button">
-          <span>⬅</span> Back to Home
-        </a>
+      <div class="tip-item">
+        <div class="tip-icon">🔢</div>
+        <div class="tip-text">State both the test name and its value</div>
       </div>
+      <div class="tip-item">
+        <div class="tip-icon">🧪</div>
+        <div class="tip-text">Examples: "Hemoglobin is 14.5" or "Blood glucose is 95"</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">🎯</div>
+        <div class="tip-text">Be precise with numerical values</div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
 
-      <section class="voice-section">
-        <div class="voice-container">
-          <div class="voice-status-container">
-            <div id="recordingIndicator" class="recording-indicator"></div>
-            <div id="statusMessage" class="status-message">Ready to record</div>
-            <div id="timer" class="timer">00:00</div>
-          </div>
-
-          <div class="voice-instructions">
-            <h2>How to Use Voice Input</h2>
-            <ol>
-              <li>Click "Start Recording" below</li>
-              <li>Speak the test names and values clearly</li>
-              <li>Examples: "My hemoglobin is 14.5" or "Blood glucose level is 95"</li>
-              <li>Click "Stop Recording" when finished</li>
-            </ol>
-          </div>
-
-          <div class="recording-controls">
-            <button id="startRecording" class="voice-button start-button">Start Recording</button>
-            <button id="stopRecording" class="voice-button stop-button" disabled>Stop Recording</button>
-          </div>
-
-          <div id="processingIndicator" class="processing-indicator hidden">
-            <div class="spinner"></div>
-            <p>Processing your voice input...</p>
-          </div>
-
-          <form id="audioForm" action="{{ url_for('process_voice') }}" method="post" enctype="multipart/form-data">
-            <!-- Hidden audio blob will be added here -->
-          </form>
-        </div>
-      </section>
-
-      <section class="voice-tips-section">
-        <h2>Tips for Best Results</h2>
-        <div class="tips-container">
-          <div class="tip-item">
-            <div class="tip-icon">📢</div>
-            <div class="tip-text">Speak clearly at a normal pace</div>
-          </div>
-          <div class="tip-item">
-            <div class="tip-icon">🔢</div>
-            <div class="tip-text">Say both the test name and its value</div>
-          </div>
-          <div class="tip-item">
-            <div class="tip-icon">🧪</div>
-            <div class="tip-text">Examples: "Hemoglobin is 14.5" or "My white blood cell count is 7.2"</div>
-          </div>
-          <div class="tip-item">
-            <div class="tip-icon">🎯</div>
-            <div class="tip-text">Be precise with numerical values</div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Reference external JavaScript file -->
-    <script src="{{ url_for('static', filename='js/voice.js') }}"></script>
-  </body>
-</html>
+{% block scripts %}
+<!-- Include your voice processing JS file -->
+<script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+{% endblock %}
